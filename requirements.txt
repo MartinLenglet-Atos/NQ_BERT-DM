@@ -1,0 +1,6 @@
+numpy==1.26.4
+torch==2.4.1
+tqdm==4.66.5
+pytorch-pretrained-bert==0.6.2 # depreciated for transformers from HuggingFace
+tensorflow==2.17.0
+spacy==3.7.6

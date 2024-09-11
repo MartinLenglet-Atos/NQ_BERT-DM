@@ -47,11 +47,16 @@ else:
 import six
 
 from spacy.lang.en import English
+
+# Add the parent directory to the sys.path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from modules.graph_encoder import NodePosition, Graph, EdgeType, get_edge_position
 
 nlp = English()
-sentencizer = nlp.create_pipe("sentencizer")
-nlp.add_pipe(sentencizer)
+
+# Update call to nlp (mismatch of spacy version)
+# sentencizer = nlp.create_pipe("sentencizer")
+nlp.add_pipe("sentencizer")
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
                     datefmt='%m/%d/%Y %H:%M:%S',
@@ -705,7 +710,7 @@ def main():
         is_training = True if input_path.find("train") != -1 else False
 
         examples = []
-        with gzip.GzipFile(fileobj=tf.gfile.GFile(input_path, "rb")) as fi:
+        with gzip.GzipFile(fileobj=tf.io.gfile.GFile(input_path, "rb")) as fi: # mismatch of tensorflow version (tf.gfile.GFile replaced by tf.io.gfile.GFile in TensorFlow 2.x)
             logging.info("Reading data from {}.".format(input_path))
             for line in fi:
                 if not isinstance(line, six.text_type):
